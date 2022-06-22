@@ -2,4 +2,6 @@ const { Category } = require('../database/models');
 
 const createCategory = (name) => Category.create({ name });
 
-module.exports = { createCategory };
+const getCategories = () => Category.findAll();
+
+module.exports = { createCategory, getCategories };
