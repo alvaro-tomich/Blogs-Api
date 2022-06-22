@@ -21,4 +21,15 @@ const getUsers = () =>
         attributes: { exclude: ['password'] },
     });
 
-module.exports = { createUser, getUsers };
+const getById = async (id) => {
+    const user = await User.findOne({
+        attributes: { exclude: ['password'] },
+        where: { id },
+    });
+
+    if (!user) return false;
+
+    return user;
+};
+
+module.exports = { createUser, getUsers, getById };
