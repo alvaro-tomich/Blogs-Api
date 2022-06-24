@@ -27,4 +27,18 @@ const getPosts = () =>
         ],
     });
 
-module.exports = { createPost, getPosts };
+const getPostById = async (id) => {
+    const [post] = await BlogPost.findAll({
+        where: { id },
+        include: [
+            { model: User, as: 'user', attributes: { exclude: ['password'] } },
+            { model: Category, as: 'categories', through: { attributes: [] } },
+        ],
+    });
+
+    if (!post) return false;
+
+    return post;
+};
+
+module.exports = { createPost, getPosts, getPostById };
