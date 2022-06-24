@@ -43,7 +43,7 @@ const getPostById = async (id) => {
 
 const verifyUserPost = async (postId, userId) => {
     const verify = await BlogPost.findByPk(postId);
-    if (verify.userId !== userId) return false;
+    if (verify !== null && verify.userId !== userId) return false;
 
     return true;
 };
@@ -66,4 +66,14 @@ const updatePost = async (id, title, content) => {
     return post;
 };
 
-module.exports = { createPost, getPosts, getPostById, updatePost, verifyUserPost };
+const deletePost = async (id) => {
+    const deletedPost = await BlogPost.destroy({
+        where: { id },
+    });
+
+    if (!deletedPost) return false;
+    
+    return true;
+};
+
+module.exports = { createPost, getPosts, getPostById, updatePost, verifyUserPost, deletePost };
