@@ -32,4 +32,9 @@ const getById = async (id) => {
     return user;
 };
 
-module.exports = { createUser, getUsers, getById };
+const deleteUser = (id) =>
+    User.destroy({
+        where: { id },
+    });
+
+module.exports = { createUser, getUsers, getById, deleteUser };
