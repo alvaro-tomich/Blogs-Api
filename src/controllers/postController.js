@@ -10,4 +10,10 @@ const createPost = async (req, res) => {
     res.status(201).json(post);
 };
 
-module.exports = { createPost };
+const getPosts = async (_req, res) => {
+    const posts = await postServices.getPosts();
+
+    res.status(200).json(posts);
+};
+
+module.exports = { createPost, getPosts };
