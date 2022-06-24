@@ -41,4 +41,29 @@ const getPostById = async (id) => {
     return post;
 };
 
-module.exports = { createPost, getPosts, getPostById };
+const verifyUserPost = async (postId, userId) => {
+    const verify = await BlogPost.findByPk(postId);
+    if (verify.userId !== userId) return false;
+
+    return true;
+};
+
+const updatePost = async (id, title, content) => {
+    await BlogPost.update({ title, content }, {
+        where: { id },
+    });
+
+    if (!title || !content) return false;
+
+    const [post] = await BlogPost.findAll({
+        where: { id },
+        include: [
+            { model: User, as: 'user', attributes: { exclude: ['password'] } },
+            { model: Category, as: 'categories', through: { attributes: [] } },
+        ],
+    });
+
+    return post;
+};
+
+module.exports = { createPost, getPosts, getPostById, updatePost, verifyUserPost };
