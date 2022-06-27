@@ -5,6 +5,7 @@ const postMiddleware = require('../middlewares/postMiddleware');
 
 const route = express.Router();
 
+route.get('/post/search', tokenMiddleware, postController.findPostByQuerry);
 route.post('/post', tokenMiddleware, postMiddleware, postController.createPost);
 route.get('/post', tokenMiddleware, postController.getPosts);
 route.get('/post/:id', tokenMiddleware, postController.getPostById);
