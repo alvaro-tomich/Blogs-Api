@@ -76,4 +76,39 @@ const deletePost = async (id) => {
     return true;
 };
 
-module.exports = { createPost, getPosts, getPostById, updatePost, verifyUserPost, deletePost };
+const checkQuerry = (titlePost, contentPost) => {
+    if (titlePost.length > 0 && contentPost.length === 0) return titlePost;
+    if (contentPost.length > 0 && titlePost.length === 0) return contentPost;
+
+    return [];
+};
+
+const findPostByQuerry = async (q) => {
+    if (!q) return getPosts();
+    const titlePost = await BlogPost.findAll({
+        where: { title: q },
+        include: [
+            { model: User, as: 'user', attributes: { exclude: ['password'] } },
+            { model: Category, as: 'categories', through: { attributes: [] } },
+        ],
+    });
+    const contentPost = await BlogPost.findAll({
+        where: { content: q },
+        include: [
+            { model: User, as: 'user', attributes: { exclude: ['password'] } },
+            { model: Category, as: 'categories', through: { attributes: [] } },
+        ],
+    });
+
+    return checkQuerry(titlePost, contentPost);
+};
+
+module.exports = { 
+    createPost,
+    getPosts,
+    getPostById,
+    updatePost,
+    verifyUserPost,
+    deletePost,
+    findPostByQuerry,
+ };
